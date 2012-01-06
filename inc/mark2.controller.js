@@ -139,9 +139,9 @@ mark2.controller = (function() {
 		var drawingTD = document.getElementById(scrambleID + "_drawing");
 		drawingTD.innerHTML = "";
 		drawingTD.width = events[eventID].drawing_dimensions.w; // Sadly, this is more robust than setProperty(...).
-		var drawingWidth = events[eventID].drawing_dimensions.w;
-		var drawingHeight = events[eventID].drawing_dimensions.h;
-		scramblers[eventID].drawScramble(drawingTD, state, drawingWidth, drawingHeight);
+		var img = mark2.dom.createNewElement(drawingTD, "img");
+		img.setAttribute("src", "http://upload.wikimedia.org/wikipedia/commons/6/64/Hatt.jpg");
+		img.setAttribute("width", "100%");
 	}
 
 	var generateScrambleSet = function(continuation, competitionName, tBody, eventID, scrambler, num, numTotal, options) {
