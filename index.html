@@ -17,6 +17,12 @@
 <script type="text/javascript" src="inc/scramblers/scramble_pyram.js"></script>
 <script type="text/javascript" src="inc/scramblers/scramble_sq1.js"></script>
 
+<script type="text/javascript" src="moo/mootools-core-1.4.1.js"></script>
+<script type="text/javascript" src="moo/mootools-more-1.4.0.1.js"></script>
+<script type="text/javascript" src="moo/powertools-1.1.1.js"></script>
+
+<script type="text/javascript" src="inc/jquery-1.7.1.min.js"></script>
+
 <script type="text/javascript" src="inc/mark2.common.js"></script>
 <script type="text/javascript" src="inc/mark2.ui.js"></script>
 <script type="text/javascript" src="inc/mark2.controller.js"></script>
@@ -49,12 +55,26 @@
 		<input id="competitionName" value="" placeholder="Competition Name" onchange="scramble.updateHash();" onkeyup="scramble.updateHash();"/>
 	<br><br>
 	<button onclick="mark2.controller.go(); this.blur();" id="goButton" autofocus>Scramble!</button>
+
+
+	<br><br>
+	<div id="formContainer" style="display:none">
+		<form id="pdfForm" action="" method="POST" target="_blank">
+			<input id="pdfScrambles" type="hidden" name="scrambles" value='' />
+			<input type="submit" value=".pdf" />
+		</form>
+		<form id="zipForm" action="" method="POST" target="_blank">
+			<input id="zipScrambles" type="hidden" name="scrambles" value='' />
+			<input type="submit" value=".zip" />
+		</form>
+	</div>
+
 	</center>
 </div>
 
 
 <div class="interface" id="events_rounds_interface">
-	<div id="events">
+	<div id="events_div">
 		<center>
 		<h1>Adjust Events:</h1>
 		<table id="events_table">

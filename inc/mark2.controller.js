@@ -329,34 +329,123 @@ mark2.controller = (function() {
     	return total;
     }
 
-	var go = function() {
+    var cuboid = {};
+	cuboid['2x2x2']=1;
+	cuboid['3x3x3']=1;
+	cuboid['4x4x4']=1;
+	cuboid['5x5x5']=1;
+	cuboid['6x6x6']=1;
+	cuboid['7x7x7']=1;
 
-		mark2.ui.updateHash();
-		resetUpdatesGeneral();
-		hideInterface();
+	function request2String(scrambleArray, i) {
 
-		var competitionName = getCompetitionNameAndSetPageTitle();
-		var scrambleSets = getScrambleSetsJSON();
+		var str = scrambleArray[i].scrambleType+'*'+scrambleArray[i].scrambleCount+'*'+scrambleArray[i].copies;
+		var scrambleType = scrambleArray[i].scrambleType;
+		if (cuboid[scrambleType]) {
+			str = str+'*'+scrambleArray[i].scheme;
+		}
+
+		return str;
+
+	}
+
+	function request2Uri(scrambleArray) {
+		var uri = ''
+		for (var roundTitle in scrambleArray) {
+			var str = request2String(scrambleArray, roundTitle);
+			if (uri != '') uri += '&';
+			uri += roundTitle+'='+str;
+		}
+
+		return uri;	
+	}
+
+	var eventsMark2ToNoodle = {
+		"333":    {tnoodleEventID: '3x3',   tnoodleEventName: '3x3',            tnoodleScrambleType: '3x3x3'},
+		"222":    {tnoodleEventID: '2x2',   tnoodleEventName: '2x2',            tnoodleScrambleType: '2x2x2'},
+		"444":    {tnoodleEventID: '4x4',   tnoodleEventName: '4x4',            tnoodleScrambleType: '4x4x4'},
+		"555":    {tnoodleEventID: '5x5',   tnoodleEventName: '5x5',            tnoodleScrambleType: '5x5x5'},
+		"333oh":  {tnoodleEventID: '3x3oh', tnoodleEventName: '3x3 OH',         tnoodleScrambleType: '3x3x3'},
+		"333bf":  {tnoodleEventID: '3bld',  tnoodleEventName: '3x3 BLD',        tnoodleScrambleType: '3x3x3'},
+		"666":    {tnoodleEventID: '6x6',   tnoodleEventName: '6x6',            tnoodleScrambleType: '6x6x6'},
+		"777":    {tnoodleEventID: '7x7',   tnoodleEventName: '7x7',            tnoodleScrambleType: '7x7x7'},
+		"pyram":  {tnoodleEventID: 'pyra',  tnoodleEventName: 'Pyraminx',       tnoodleScrambleType: 'pyram'},
+		"minx":   {tnoodleEventID: 'mega',  tnoodleEventName: 'Megaminx',       tnoodleScrambleType: 'mega'},
+		"sq1":    {tnoodleEventID: 'sq1',   tnoodleEventName: 'Square-1',       tnoodleScrambleType: 'sq1'},
+		"clock":  {tnoodleEventID: 'clk',   tnoodleEventName: 'Rubiks Clock',   tnoodleScrambleType: 'clock'},
+		"333ft":  {tnoodleEventID: 'feet',  tnoodleEventName: '3x3 with feet',  tnoodleScrambleType: '3x3x3'},
+		"333fm":  {tnoodleEventID: 'fmc',   tnoodleEventName: 'Fewest Moves',   tnoodleScrambleType: '3x3x3'},
+		"444bf":  {tnoodleEventID: '4bld',  tnoodleEventName: '4x4 BLD',        tnoodleScrambleType: '4x4x4'},
+		"444bf":  {tnoodleEventID: '5bld',  tnoodleEventName: '5x5 BLD',        tnoodleScrambleType: '5x5x5'},
+		"333mbf": {tnoodleEventID: 'multi', tnoodleEventName: '3x3 Multi-BLD',  tnoodleScrambleType: '3x3x3'}
+	}
+
+	var roundsMark2ToTNoodle = function(scrambleSetsJSON) {
+		var tnoodleJSON = {};
+
+		for (var i = 0; i < scrambleSetsJSON.length; i++) {
+
+			var scrambleSet = scrambleSetsJSON[i];
+			var eventID = scrambleSet[0];
+			var tnoodleEventMap = eventsMark2ToNoodle[eventID];
+
+			console.log(eventID);
+
+			tnoodleJSON[tnoodleEventMap.tnoodleEventName] = {
+				"copies": 1,
+				"scrambleCount": scrambleSet[2],
+				"scrambleType": tnoodleEventMap.tnoodleScrambleType
+			}
+		}
+
+		return tnoodleJSON;
+	}
+
+    var go = function() {
 		
-		totalNumScrambles = countScrambles(scrambleSets);
-		numScramblesDone = 0;
-		updateProgress();
-		showUpdates();
-		showProgressMessage("Generating " + totalNumScrambles + " scrambles...");
+		var compName = getCompetitionNameAndSetPageTitle();
+		compName = encodeURIComponent(compName);
+		if (compName == '') compName = 'scramble';
 
-		if (scrambleSets.length === 0) {
-			addUpdateGeneral("Nothing to do, because there are no rounds to scramble.");
-			return;
-		}
+		var jsonUrl = "http://tnoodle.tk/scramble/scramble.json?";
 
-		addUpdateGeneral("Generating " + scrambleSets.length + " round" + ((scrambleSets.length === 1) ? "" : "s") + " of scrambles.");
+		var scrambleSetsJSON = getScrambleSetsJSON();
+		var scrambleArray = roundsMark2ToTNoodle(scrambleSetsJSON);
+		var variableString = request2Uri(scrambleArray);
+		"Pyraminx=pyram*5*1&Rubiks%20Clock=clock*5*1";
+		
+		jsonUrl += variableString;
 
-		var continuation = function() {
-			addUpdateGeneral("Done with synchronous calls.");
-		}
+		document.getElementById('goButton').value = "loading...";
+		document.getElementById('goButton').disabled = "disabled";
 
-		generateScrambleSets(continuation, competitionName, scrambleSets);
-	};
+		$.ajax({
+		  url: jsonUrl,
+		  success: function(responseJSON){
+
+		  	responseText = JSON.stringify(responseJSON);
+
+			document.getElementById('goButton').value = "Get Scrambles";
+			if(responseJSON.error) {
+				alert(responseText);
+				document.getElementById('goButton').value = "Get Scrambles";
+				document.getElementById('goButton').removeAttribute('disabled');
+				return;
+			}
+
+			document.getElementById('goButton').removeAttribute('disabled');
+			document.getElementById('pdfScrambles').value = responseText;
+			document.getElementById('pdfForm').action = 'http://tnoodle.tk/view/'+compName+'.pdf';
+
+			document.getElementById('zipScrambles').value = responseText;
+			document.getElementById('zipForm').action = 'http://tnoodle.tk/view/'+compName+'.zip';
+
+			document.getElementById('formContainer').style.display = "block";
+
+		  }
+		});
+
+	}
 
 
 

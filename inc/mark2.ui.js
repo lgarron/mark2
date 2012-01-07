@@ -157,7 +157,7 @@ mark2.ui = (function() {
 	 */
 
 	var addRound = function(eventID, roundNameOpt, numGroupsOpt, numSolvesOpt) {
-
+console.log(eventID);
 		var roundName = roundNameOpt;
 		if (roundNameOpt === undefined) {
 			roundName = "Round " + (numCurrentRounds(eventID)+1);
@@ -204,7 +204,8 @@ mark2.ui = (function() {
 	}
 
     var addRounds = function(rounds) {
-    	for (var i in rounds) {
+    	console.log(rounds);
+    	for (var i =0; i < rounds.length; i++) {
 	    	addRound(rounds[i][0], rounds[i][1], rounds[i][2], rounds[i][3]);
 	    }
     }
