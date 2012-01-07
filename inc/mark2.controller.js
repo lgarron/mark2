@@ -58,6 +58,7 @@ mark2.controller = (function() {
 	 */
 
 	var doneCreatingRounds = false;
+	var totalNumScrambles;
 	var scramblesStillAwaiting = [];
 
     var getScrambleSetsJSON = function() {
@@ -202,34 +203,36 @@ mark2.controller = (function() {
 		var scrambler = scramblers[eventID];
 
 		// Create a new scramble set.
+
+		var newScramblesTBodyID = mark2.dom.nextAutoID();
+
+		// This used to be a set of dynamic createNewElement(...) calls
+		var newScrambleSetString = '\
+			<table class="info_table">\
+				<thead><tr>\
+					<td class="puzzle_name">' + events[eventID].name + '</td>\
+					<td class="competition_name">' + competitionName + '</td>\
+					<td class="round_name">' + roundName + '</td>\
+				</tr></thead>\
+			</table>\
+			<table class="scramble_table">\
+				<tbody id="' + newScramblesTBodyID + '">\
+				</tbody>\
+			</table>\
+			<table class="footer_table">\
+				<thead><tr>\
+					<td>' + '<u>Scrambles generated at:</u><br>' + (new Date().toString()) + '</td>\
+					<td>' + '<div style="text-align: right;"><u>' + events[eventID].name + ' Scrambler Version</u><br>' + scrambler.version + '</div>' + '</td>\
+					<td>' + '<img src="inc/wca_logo.svg" class="wca_logo">' + '</td>\
+				</tr></thead>\
+			</table>\
+			';
+
 		
-		var newScrambleSet = mark2.dom.createNewElement(scrambleSets, "div", "scramble_set");
+		var newScrambleSet = mark2.dom.createNewElement(scrambleSets, "div", "scramble_set", null, newScrambleSetString);
 		mark2.dom.hideElement(newScrambleSet);
 
-			// Header Table
-
-			var newInfoTable = mark2.dom.createNewElement(newScrambleSet, "table", "info_table");
-				var newInfoTHead = mark2.dom.createNewElement(newInfoTable, "thead");
-					var newInfoTR = mark2.dom.createNewElement(newInfoTHead, "tr");
-						
-						mark2.dom.createNewElement(newInfoTR, "td", "puzzle_name", null, events[eventID].name);
-						mark2.dom.createNewElement(newInfoTR, "td", "competition_name", null, competitionName);
-						mark2.dom.createNewElement(newInfoTR, "td", "round_name", null, roundName);
-
-			// Scrambles Table
-
-			var newScramblesTable = mark2.dom.createNewElement(newScrambleSet, "table", "scramble_table");
-				var newScramblesTBody = mark2.dom.createNewElement(newScramblesTable, "tbody");
-					
-			// Footer Table
-
-			var newFooterTable = mark2.dom.createNewElement(newScrambleSet, "table", "footer_table");
-				var newFooterTHead = mark2.dom.createNewElement(newFooterTable, "thead");
-					var newFooterTR = mark2.dom.createNewElement(newFooterTHead, "tr");
-
-						mark2.dom.createNewElement(newFooterTR, "td", null, null, '<u>Scrambles generated at:</u><br>' + (new Date().toString()));
-						mark2.dom.createNewElement(newFooterTR, "td", null, null, '<div style="text-align: right;"><u>' + events[eventID].name + ' Scrambler Version</u><br>' + scrambler.version + '</div>');
-						mark2.dom.createNewElement(newFooterTR, "td", null, null, '<img src="inc/wca_logo.svg" class="wca_logo">');
+		var newScramblesTBody = document.getElementById(newScramblesTBodyID);
 		
 		// Generate those scrambles!
 		
