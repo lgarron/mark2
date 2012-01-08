@@ -361,23 +361,24 @@ mark2.controller = (function() {
 	}
 
 	var eventsMark2ToNoodle = {
-		"333":    {tnoodleEventID: '3x3',   tnoodleEventName: '3x3',            tnoodleScrambleType: '3x3x3'},
-		"222":    {tnoodleEventID: '2x2',   tnoodleEventName: '2x2',            tnoodleScrambleType: '2x2x2'},
-		"444":    {tnoodleEventID: '4x4',   tnoodleEventName: '4x4',            tnoodleScrambleType: '4x4x4'},
-		"555":    {tnoodleEventID: '5x5',   tnoodleEventName: '5x5',            tnoodleScrambleType: '5x5x5'},
-		"333oh":  {tnoodleEventID: '3x3oh', tnoodleEventName: '3x3 OH',         tnoodleScrambleType: '3x3x3'},
-		"333bf":  {tnoodleEventID: '3bld',  tnoodleEventName: '3x3 BLD',        tnoodleScrambleType: '3x3x3'},
-		"666":    {tnoodleEventID: '6x6',   tnoodleEventName: '6x6',            tnoodleScrambleType: '6x6x6'},
-		"777":    {tnoodleEventID: '7x7',   tnoodleEventName: '7x7',            tnoodleScrambleType: '7x7x7'},
+		"333":    {tnoodleEventID: '3x3',   tnoodleEventName: '3x3',            tnoodleScrambleType: '333'},
+		"222":    {tnoodleEventID: '2x2',   tnoodleEventName: '2x2',            tnoodleScrambleType: '222'},
+		"444":    {tnoodleEventID: '4x4',   tnoodleEventName: '4x4',            tnoodleScrambleType: '444'},
+		"555":    {tnoodleEventID: '5x5',   tnoodleEventName: '5x5',            tnoodleScrambleType: '555'},
+		"333oh":  {tnoodleEventID: '3x3oh', tnoodleEventName: '3x3 OH',         tnoodleScrambleType: '333'},
+		"333bf":  {tnoodleEventID: '3bld',  tnoodleEventName: '3x3 BLD',        tnoodleScrambleType: '333'},
+		"666":    {tnoodleEventID: '6x6',   tnoodleEventName: '6x6',            tnoodleScrambleType: '666'},
+		"777":    {tnoodleEventID: '7x7',   tnoodleEventName: '7x7',            tnoodleScrambleType: '777'},
 		"pyram":  {tnoodleEventID: 'pyra',  tnoodleEventName: 'Pyraminx',       tnoodleScrambleType: 'pyram'},
 		"minx":   {tnoodleEventID: 'mega',  tnoodleEventName: 'Megaminx',       tnoodleScrambleType: 'mega'},
 		"sq1":    {tnoodleEventID: 'sq1',   tnoodleEventName: 'Square-1',       tnoodleScrambleType: 'sq1'},
 		"clock":  {tnoodleEventID: 'clk',   tnoodleEventName: 'Rubiks Clock',   tnoodleScrambleType: 'clock'},
-		"333ft":  {tnoodleEventID: 'feet',  tnoodleEventName: '3x3 with feet',  tnoodleScrambleType: '3x3x3'},
-		"333fm":  {tnoodleEventID: 'fmc',   tnoodleEventName: 'Fewest Moves',   tnoodleScrambleType: '3x3x3'},
-		"444bf":  {tnoodleEventID: '4bld',  tnoodleEventName: '4x4 BLD',        tnoodleScrambleType: '4x4x4'},
-		"444bf":  {tnoodleEventID: '5bld',  tnoodleEventName: '5x5 BLD',        tnoodleScrambleType: '5x5x5'},
-		"333mbf": {tnoodleEventID: 'multi', tnoodleEventName: '3x3 Multi-BLD',  tnoodleScrambleType: '3x3x3'}
+		"333ft":  {tnoodleEventID: 'feet',  tnoodleEventName: '3x3 with feet',  tnoodleScrambleType: '333'},
+		"333fm":  {tnoodleEventID: 'fmc',   tnoodleEventName: 'Fewest Moves',   tnoodleScrambleType: '333'},
+		"444bf":  {tnoodleEventID: '4bld',  tnoodleEventName: '4x4 BLD',        tnoodleScrambleType: '444'},
+		"444bf":  {tnoodleEventID: '5bld',  tnoodleEventName: '5x5 BLD',        tnoodleScrambleType: '555'},
+		"555bf":  {tnoodleEventID: '5bld',  tnoodleEventName: '5x5 BLD',        tnoodleScrambleType: '555'},
+		"333mbf": {tnoodleEventID: 'multi', tnoodleEventName: '3x3 Multi-BLD',  tnoodleScrambleType: '333'}
 	}
 
 	var roundsMark2ToTNoodle = function(scrambleSetsJSON) {
@@ -737,4 +738,4 @@ mark2.controller = (function() {
 		go: go,
 		terminateWebWorkers: terminateWebWorkers,
 	};
-})();
+})();	
