@@ -2,7 +2,7 @@
 
 "use strict";
 
-var DEFAULT_NUM = 1000000;
+var DEFAULT_NUM = 3674160;
 
 var eventIDs = [
   "222",
